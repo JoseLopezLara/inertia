@@ -42,18 +42,20 @@ class TodoController extends Controller
      *    Inertia intercepta esta redirección y actualiza la página sin una recarga completa.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|max:50000',
             'description' => 'nullable|string',
         ]);
 
         Todo::create($validated);
 
-        return redirect()->route('todos.index');
+        //return redirect()->route('todos.index');
+        return Inertia::render('TodoList/Index', [
+            'todos' => Todo::all(),
+        ]);
     }
 
     /**
@@ -77,7 +79,13 @@ class TodoController extends Controller
 
         $todo->update($request->only('completed'));
 
-        return redirect()->route('todos.index');
+        //Opción 1:
+        //return redirect()->route('todos.index');
+
+        //Opción 2:
+        return Inertia::render('TodoList/Index', [
+            'todos' => Todo::all(),
+        ]);
     }
 
     /**
