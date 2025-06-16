@@ -23,41 +23,11 @@ createInertiaApp({
      * @param name - El nombre del componente enviado desde el backend de Laravel.
      * @returns Una promesa que resuelve el módulo del componente de React.
      */
-    resolve: (name) => {
-        // Comprueba si el nombre del componente contiene un '/', lo que indica que podría ser parte de un 'Feature'.
-        if (name.includes('/')) {
-            // Si es así, asume que sigue la estructura: `Features/{FeatureName}/pages/{PageName}.tsx`.
-            // Esto permite que 'TodoList/Index' se resuelva a './Features/TodoList/pages/Index.tsx'.
-            const parts = name.split('/');
-            const feature = parts.shift(); // Extrae 'TodoList'
-            const pageName = parts.join('/'); // Extrae 'Index'
-
-            return resolvePageComponent(
-                `./Features/${feature}/pages/${pageName}.tsx`,
-                import.meta.glob<Page>('./Features/**/*.tsx'),
-            );
-        }
-
-        // Si no es un 'Feature', busca en la carpeta de páginas estándar.
-        const pages = import.meta.glob(['./pages/**/*.tsx', './Features/**/pages/**/*.tsx']);
-        let path = '';
-
-        if (name.includes('/')) {
-            const [feature, ...pageParts] = name.split('/');
-            const page = pageParts.join('/');
-            path = `./Features/${feature}/pages/${page}.tsx`;
-        } else {
-            path = `./pages/${name}.tsx`;
-        }
-
-        const pageResolver = pages[path] as any;
-
-        if (typeof pageResolver === 'undefined') {
-            throw new Error(`Page not found: ${name}. Looking for path: ${path}`);
-        }
-
-        return pageResolver();
-    },
+    resolve: (name) =>
+        resolvePageComponent(
+            `./pages/${name}.tsx`,
+            import.meta.glob('./pages/**/*.tsx'),
+        ),
     setup({ el, App, props }) {
         const root = createRoot(el);
 

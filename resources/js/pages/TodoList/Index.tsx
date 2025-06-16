@@ -1,8 +1,8 @@
 import React from 'react';
 import { type BreadcrumbItem } from '@/types';
-import { type Todo } from '@/Features/TodoList/types';
-import { AddTodoForm } from '@/Features/TodoList/components/AddTodoForm';
-import { TodoList } from '@/Features/TodoList/components/TodoList';
+import { type Todo } from '@/types/TodoList';
+import { AddTodoForm } from '@/components/TodoList/AddTodoForm';
+import { TodoList } from '@/components/TodoList/TodoList';
 import AppLayout from '@/layouts/app-layout';
 import { Head } from '@inertiajs/react';
 

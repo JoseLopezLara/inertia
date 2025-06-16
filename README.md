@@ -58,15 +58,20 @@ app
         └── TodoList                <-- Feature Module
             └── TodoController.php
 
-resources
-└── js
-    └── Features
-        └── TodoList                <-- Feature Module
-            ├── components
-            │   ├── AddTodoForm.tsx
-            │   └── TodoItem.tsx
-            └── pages
-                └── Index.tsx
+resources/js/
+├── app.tsx
+├── components/
+│   └── TodoList/
+│       ├── AddTodoForm.tsx
+│       ├── TodoItem.tsx
+│       └── TodoList.tsx
+├── layouts/
+├── pages/
+│   └── TodoList/
+│       └── Index.tsx
+├── types/
+│   └── TodoList/
+│       └── index.d.ts
 
 routes
 └── web.php (routes point to the modular controller)

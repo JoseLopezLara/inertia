@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { type Todo } from '@/Features/TodoList/types';
+import { type Todo } from '@/types/TodoList';
 import { router } from '@inertiajs/react';
 import { Trash2 } from 'lucide-react';
 import {
@@ -59,18 +59,17 @@ export const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
                 </DialogTrigger>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Are you absolutely sure?</DialogTitle>
+                        <DialogTitle>Delete Todo</DialogTitle>
                         <DialogDescription>
-                            This action cannot be undone. This will permanently delete the todo item:
-                            <strong className="block mt-2">{todo.title}</strong>
+                            Are you sure you want to delete this todo?
                         </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
-                        <DialogClose asChild>
-                            <Button variant="outline">Cancel</Button>
-                        </DialogClose>
+                        <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+                            Cancel
+                        </Button>
                         <Button variant="destructive" onClick={handleDeleteConfirm}>
-                            Confirm Delete
+                            Delete
                         </Button>
                     </DialogFooter>
                 </DialogContent>
