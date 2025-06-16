@@ -41,20 +41,35 @@
 
         @routes
         @viteReactRefresh
+        {{-- Lógica Dinámica para la Carga de Componentes con Vite --}}
+        {{-- Este bloque de PHP es crucial para que la aplicación funcione con nuestra arquitectura modular. --}}
+        {{-- Su propósito es construir la ruta correcta al archivo del componente de página de React, --}}
+        {{-- permitiendo que Vite lo cargue correctamente, especialmente en recargas de página directas. --}}
         @php
+            // Obtiene el nombre del componente de la página actual, proporcionado por Inertia. (ej. 'TodoList/Index')
             $component = $page['component'];
+            
+            // Define la ruta por defecto, asumiendo que el componente está en la carpeta 'pages'.
             $path = "resources/js/pages/{$component}.tsx";
 
+            // Si el nombre del componente contiene un '/', podría ser un componente de un módulo 'Feature'.
             if (str_contains($component, '/')) {
+                // Extrae el nombre del 'Feature' (la primera parte del nombre, ej. 'TodoList').
                 $feature = explode('/', $component, 2)[0];
+                
+                // Comprueba si existe un directorio con ese nombre dentro de 'resources/js/Features'.
                 if (is_dir(resource_path("js/Features/{$feature}"))) {
+                    // Si existe, reconstruye la ruta para que apunte a la carpeta 'pages' dentro del 'Feature'.
+                    // ej. 'TodoList/Index' se convierte en 'resources/js/Features/TodoList/pages/Index.tsx'.
                     $parts = explode('/', $component);
-                    array_shift($parts);
-                    $pageName = implode('/', $parts);
+                    array_shift($parts); // Elimina el nombre del 'Feature'
+                    $pageName = implode('/', $parts); // Recompone el resto de la ruta
                     $path = "resources/js/Features/{$feature}/pages/{$pageName}.tsx";
                 }
             }
         @endphp
+        {{-- La directiva @vite ahora usa la ruta dinámica ($path) que hemos calculado. --}}
+        {{-- Esto asegura que tanto el 'app.tsx' principal como el componente de la página actual se carguen. --}}
         @vite(['resources/js/app.tsx', $path])
         @inertiaHead
     </head>

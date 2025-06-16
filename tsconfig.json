@@ -10,8 +10,15 @@
         "forceConsistentCasingInFileNames": true,
         "strict": true,
         "skipLibCheck": true,
+        // 'baseUrl' y 'paths' son cruciales para simplificar las importaciones de módulos.
+        // 'baseUrl': "." establece el directorio raíz del proyecto para las rutas.
         "baseUrl": ".",
+        // 'paths' define alias para las rutas de importación.
         "paths": {
+            // '@/*': Crea un alias '@' que apunta a 'resources/js/'.
+            // Esto permite importar componentes de forma más limpia (ej. `import Component from '@/components/Component'`)
+            // en lugar de usar rutas relativas complejas (ej. `import Component from '../../components/Component'`).
+            // Esta configuración debe estar sincronizada con el alias en 'vite.config.js'.
             "@/*": [
                 "resources/js/*"
             ],
