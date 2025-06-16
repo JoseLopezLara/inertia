@@ -1,4 +1,4 @@
-# Laravel & React/Inertia.js Todo List Application
+# Laravel & React/Inertia.js Todo List Application.
 
 This is a full-stack Todo List application built with a modern technology stack, featuring a modular backend architecture and a reactive frontend. The project serves as a powerful demonstration of how to structure a scalable and maintainable application using Laravel 12 for the backend and React (with TypeScript) for the frontend, seamlessly connected by Inertia.js.
 
