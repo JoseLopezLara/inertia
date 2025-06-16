@@ -8,8 +8,8 @@ export const AddTodoForm: React.FC = () => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        post('/todos', {
-            onSuccess: () => reset('title'), // Reset only the title field
+        post(route('todos.store'), {
+            onSuccess: () => reset('title'),
             preserveScroll: true,
         });
     };

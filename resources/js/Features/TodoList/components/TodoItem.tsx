@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { type Todo } from '@/types';
+import { type Todo } from '@/Features/TodoList/types';
 import { router } from '@inertiajs/react';
 import { Trash2 } from 'lucide-react';
 import {
@@ -23,14 +23,14 @@ export const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
 
     const handleToggle = () => {
         router.patch(
-            `/todos/${todo.id}`,
+            route('todos.update', todo.id),
             { completed: !todo.completed },
             { preserveScroll: true },
         );
     };
 
     const handleDeleteConfirm = () => {
-        router.delete(`/todos/${todo.id}`, {
+        router.delete(route('todos.destroy', todo.id), {
             preserveScroll: true,
             onSuccess: () => setIsDialogOpen(false),
         });

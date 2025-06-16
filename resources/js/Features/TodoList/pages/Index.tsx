@@ -1,7 +1,8 @@
 import React from 'react';
-import { type Todo, type BreadcrumbItem } from '@/types';
-import { AddTodoForm } from '@/components/AddTodoForm';
-import { TodoList } from '@/components/TodoList';
+import { type BreadcrumbItem } from '@/types';
+import { type Todo } from '@/Features/TodoList/types';
+import { AddTodoForm } from '@/Features/TodoList/components/AddTodoForm';
+import { TodoList } from '@/Features/TodoList/components/TodoList';
 import AppLayout from '@/layouts/app-layout';
 import { Head } from '@inertiajs/react';
 
@@ -12,7 +13,7 @@ interface IndexProps {
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Todo List',
-        href: '/todos',
+        href: route('todos.index'),
     },
 ];
 

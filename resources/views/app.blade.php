@@ -41,7 +41,21 @@
 
         @routes
         @viteReactRefresh
-        @vite(['resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
+        @php
+            $component = $page['component'];
+            $path = "resources/js/pages/{$component}.tsx";
+
+            if (str_contains($component, '/')) {
+                $feature = explode('/', $component, 2)[0];
+                if (is_dir(resource_path("js/Features/{$feature}"))) {
+                    $parts = explode('/', $component);
+                    array_shift($parts);
+                    $pageName = implode('/', $parts);
+                    $path = "resources/js/Features/{$feature}/pages/{$pageName}.tsx";
+                }
+            }
+        @endphp
+        @vite(['resources/js/app.tsx', $path])
         @inertiaHead
     </head>
     <body class="font-sans antialiased">

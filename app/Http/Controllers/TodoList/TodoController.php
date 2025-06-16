@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\TodoList;
 
+use App\Http\Controllers\Controller;
 use App\Models\Todo;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -10,7 +11,7 @@ class TodoController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Todos/Index', [
+        return Inertia::render('TodoList/Index', [
             'todos' => Todo::all(),
         ]);
     }
@@ -24,10 +25,7 @@ class TodoController extends Controller
 
         Todo::create($validated);
 
-        //return redirect()->route('todos.index');
-        return Inertia::render('Todos/Index', [
-            'todos' => Todo::all(),
-        ]);
+        return redirect()->route('todos.index');
     }
 
     public function update(Request $request, Todo $todo)
@@ -41,12 +39,7 @@ class TodoController extends Controller
         ]);
 
         //Opción 1:
-        //return redirect()->route('todos.index');
-
-        //Opción 2:
-        return Inertia::render('Todos/Index', [
-            'todos' => Todo::all(),
-        ]);
+        return redirect()->route('todos.index');
     }
 
     public function destroy(Todo $todo)

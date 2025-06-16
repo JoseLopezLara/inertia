@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\TodoController;
+use App\Http\Controllers\TodoList\TodoController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -8,10 +8,12 @@ Route::get('/', function () {
     return Inertia::render('welcome');
 })->name('home');
 
-Route::get('/todos', [TodoController::class, 'index'])->name('todos.index');
-Route::post('/todos', [TodoController::class, 'store'])->name('todos.store');
-Route::patch('/todos/{todo}', [TodoController::class, 'update'])->name('todos.update');
-Route::delete('/todos/{todo}', [TodoController::class, 'destroy'])->name('todos.destroy');
+Route::group(['prefix' => 'todos', 'as' => 'todos.'], function () {
+    Route::get('/', [TodoController::class, 'index'])->name('index');
+    Route::post('/', [TodoController::class, 'store'])->name('store');
+    Route::patch('/{todo}', [TodoController::class, 'update'])->name('update');
+    Route::delete('/{todo}', [TodoController::class, 'destroy'])->name('destroy');
+});
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {

@@ -31,13 +31,6 @@ export interface SharedData {
     [key: string]: unknown;
 }
 
-export interface Todo {
-    id: number;
-    title: string;
-    description: string | null;
-    completed: boolean;
-}
-
 export interface User {
     id: number;
     name: string;
