@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from '@inertiajs/react';
 
 // Componente para el formulario de agregar una nueva tarea
-export const AddTodoForm: React.FC = () => {
+export const AddSimpleTodoForm: React.FC = () => {
     // useForm es un hook de Inertia.js para manejar formularios
     // data: estado del formulario; setData: función para actualizar campos
     // post: función para enviar datos al backend; processing: estado de envío
