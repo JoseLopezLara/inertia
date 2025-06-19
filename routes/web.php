@@ -24,7 +24,7 @@ Route::group(['prefix' => 'todos', 'as' => 'todos.'], function () {
 
     // PATCH /todos/{todo} -> Actualiza una tarea existente (ej. marcarla como completada).
     // Conectado al método `update` del TodoController.
-    Route::patch('/{todo}', [TodoController::class, 'update'])->name('update');
+    Route::patch('/', [TodoController::class, 'update'])->name('update');
 
     // DELETE /todos/{todo} -> Elimina una tarea.
     // Conectado al método `destroy` del TodoController.

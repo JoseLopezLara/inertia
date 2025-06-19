@@ -19,8 +19,8 @@ class TodoController extends Controller
     public function index()
     {
         return Inertia::render('TodoList/Index', [
-            'todos' => Todo::all(),
-            'current_time' => Inertia::optional(fn () => Carbon::now()->toIso8601String())
+            'todos' =>  Todo::all(),
+            'current_time' => Inertia::optional(callback: fn () => Carbon::now()->toIso8601String())
         ]);
     }
 
@@ -69,6 +69,10 @@ class TodoController extends Controller
     {
         $todo->delete();
 
-        return redirect()->route('todos.index');
+        //return redirect()->route('todos.index');
+        //Opción 2:
+        return Inertia::render('TodoList/Index', [
+            'todos' => Todo::all(),
+        ]);
     }
 }

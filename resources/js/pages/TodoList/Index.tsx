@@ -10,14 +10,12 @@ import { Head, router } from '@inertiajs/react';
 import { AddRichTodoForm } from '@/components/TodoList/AddRichTodoForm';
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
-import { Bar, BarChart } from "recharts"
-import { ChartConfig, ChartContainer } from "@/components/ui/chart"
-import { on } from 'events';
 
 interface IndexProps {
     todos: Todo[];
     currentTime?: string; 
 }
+
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -26,21 +24,21 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-const Index: React.FC<IndexProps> = ({ todos, currentTime }) => {
+const Index: React.FC<IndexProps> = ({ todos}) => {
     //Es null en una primer instancia
     const [dynamicTime, setDynamicTime ] = useState<string | null>(null);
-    const [isSimpleTodoSelected, setSimpleTodoSelected ] = useState(false);
+    const [isSimpleTodoSelected, setIsSimpleTodoSelected ] = useState(false);
 
     const handleToggle = (checked: boolean) => {
-        setSimpleTodoSelected(checked);
+        setIsSimpleTodoSelected(checked);
 
         if (checked){
-            router.reload({
+            router.reload(
+                {
                 only: ['current_time'],
                 onSuccess: (page) => {
-                    const props = page.props as Partial<IndexProps>;
-                    setDynamicTime(props.currentTime ?? null);
-                    console.log(props.currentTime);
+                    const props = page.props.current_time as Partial<IndexProps>;
+                    setDynamicTime(props as string || null);
                 }, onError: (error) => {
                     console.error(error);
                 }
@@ -50,12 +48,15 @@ const Index: React.FC<IndexProps> = ({ todos, currentTime }) => {
         }
     };
 
+
     return (
         // AppLayout recibe los breadcrumbs para mostrar la barra de navegación.
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Todo List" />
             <div className="container mx-auto p-4">
                 <h1 className="text-2xl font-bold mb-2">Todo List</h1>
+                
+
                 <div className="flex items-center space-x-2 mb-2">
                     <Switch id="simple-todo-mode" 
                         checked={isSimpleTodoSelected}
@@ -64,7 +65,7 @@ const Index: React.FC<IndexProps> = ({ todos, currentTime }) => {
                     <Label htmlFor="simple-todo-mode">Rich Todo</Label>
                 </div>
                 
-                {isSimpleTodoSelected ? <AddRichTodoForm currentTime={dynamicTime || 'Loading...'} /> : <AddSimpleTodoForm />}
+                {isSimpleTodoSelected ? <AddRichTodoForm currentTime={dynamicTime as string || 'Loading...'} /> : <AddSimpleTodoForm />}
 
                 <TodoList todos={todos} />
             </div>

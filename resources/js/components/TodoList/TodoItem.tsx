@@ -28,7 +28,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
     // Cambia el estado de completado de la tarea (checkbox)
     // Hace una petición PATCH al backend usando Inertia.js
     const handleToggle = () => {
-        router.patch(
+        router.post(
             route('todos.update', todo.id),
             { completed: !todo.completed },
             { preserveScroll: true },
