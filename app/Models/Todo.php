@@ -19,5 +19,7 @@ class Todo extends Model
         'title',
         'completed',
         'description',
+        'time',
+        'date',
     ];
 }

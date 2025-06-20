@@ -4,6 +4,8 @@ import { type Todo } from '@/types/TodoList';
 import { router } from '@inertiajs/react';
 import {Trash2 } from 'lucide-react';
 import { Badge } from "@/components/ui/badge"
+import {formatTimeToHhMm} from "@/utils/formaTimeToHhMm"
+
 import {
     Dialog,
     DialogContent,
@@ -16,20 +18,20 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 
-// Props que recibe este componente: una tarea (todo) individual
 interface RichTodoItemProps {
-    todo: Todo; // Tarea individual a mostrar
+    todo: Todo; 
 }
 
 // Componente que representa un ítem/tarea en la lista de tareas
 export const RichTodoItem: React.FC<RichTodoItemProps> = ({ todo }) => {
     // Estado local para controlar si el diálogo de confirmación de borrado está abierto
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const displayTime = formatTimeToHhMm(todo.date + ' ' + todo.time);
 
     // Cambia el estado de completado de la tarea (checkbox)
     // Hace una petición PATCH al backend usando Inertia.js
     const handleToggle = () => {
-        router.post(
+        router.patch(
             route('todos.update', todo.id),
             { completed: !todo.completed },
             { preserveScroll: true },
@@ -96,12 +98,11 @@ export const RichTodoItem: React.FC<RichTodoItemProps> = ({ todo }) => {
 
                 {/* Descripción de la tarea */}
                 <span className={`flex-grow pl-6 ${todo.completed ? 'line-through text-gray-500' : ''}`}>
-                    {/* {todo.title} */}
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                    {todo.description}
                 </span>
 
                 <div className='flex w-full justify-end pr-6 -mt-2.5 mb-2'>
-                    <Badge><span className='text-xs'>19/06/2025 21:57hrs</span></Badge>
+                    <Badge><span className='text-xs'>{displayTime}</span></Badge>
                 </div>
 
             </div>

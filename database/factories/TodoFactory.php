@@ -16,10 +16,20 @@ class TodoFactory extends Factory
      */
     public function definition(): array
     {
-        return [
-            'title' => fake()->sentence(),
-            'description' => fake()->paragraph(),
-            'completed' => fake()->boolean(),
-        ];
+
+        if (fake()->boolean()) {
+            return [
+                'title' => fake()->sentence(),
+                'completed' => fake()->boolean(),
+            ];
+        } else {
+            return [
+                'title' => fake()->sentence(),
+                'description' => fake()->paragraph(),
+                'completed' => fake()->boolean(),
+                'time' => fake()->time(),
+                'date' => fake()->date(),
+            ];
+        }
     }
 }

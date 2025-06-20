@@ -14,6 +14,7 @@ import { RichTodoList } from '@/components/TodoList/RichTodoList';
 
 interface IndexProps {
     todos: Todo[];
+    richTodos: Todo[];
     currentTime?: string;
 }
 
@@ -24,7 +25,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-const Index: React.FC<IndexProps> = ({todos}) => {
+const Index: React.FC<IndexProps> = ({todos, richTodos}) => {
     //Es null en una primer instancia
     const [dynamicTime, setDynamicTime ] = useState<string | null>(null);
     const [isSimpleTodoSelected, setIsSimpleTodoSelected ] = useState(false);
@@ -69,7 +70,7 @@ const Index: React.FC<IndexProps> = ({todos}) => {
                 <h2 className="text-xl font-bold my-4">Simple Todo List</h2>
                 <TodoList todos={todos} />
                 <h2 className="text-xl font-bold my-4">Rich Todo List</h2>
-                <RichTodoList richTodos={todos} />
+                <RichTodoList richTodos={richTodos} />
             </div>
         </AppLayout>
     );

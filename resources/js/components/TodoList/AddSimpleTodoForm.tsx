@@ -5,19 +5,15 @@ import { Label } from "@/components/ui/label"
 // Componente para el formulario de agregar una nueva tarea
 export const AddSimpleTodoForm: React.FC = () => {
     // useForm es un hook de Inertia.js para manejar formularios
-    // data: estado del formulario; setData: función para actualizar campos
-    // post: función para enviar datos al backend; processing: estado de envío
-    // errors: errores de validación; reset: para limpiar el formulario
     const { data, setData, post, processing, errors, reset } = useForm({
         title: '', // Campo para el título de la nueva tarea
     });
 
-    // Maneja el envío del formulario
     // Envía una petición POST al backend para agregar una nueva tarea
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         post(route('todos.store'), {
-            onSuccess: () => reset('title'), // Limpia el campo al agregar
+            onSuccess: () => reset('title'), 
             preserveScroll: true,
         });
     };

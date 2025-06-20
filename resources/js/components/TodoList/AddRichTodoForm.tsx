@@ -3,6 +3,7 @@ import { useForm } from '@inertiajs/react';
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
+import { time } from 'console';
 //import { clearInterval } from 'timers';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -32,13 +33,13 @@ export const AddRichTodoForm: React.FC<AddRichTodoFormProps> = ({currentTime}) =
     const [displayTime, setDisplayTime] = useState(currentTime);
     const { data, setData, post, processing, errors, reset } = useForm({
         title: '', 
-        description: '', 
+        description: '',
     });
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         post(route('todos.store'), {
-            onSuccess: () => reset('title'),
+            onSuccess: () => reset('title', 'description'),
             preserveScroll: true,
         });
     };

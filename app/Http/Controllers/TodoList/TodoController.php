@@ -19,7 +19,8 @@ class TodoController extends Controller
     public function index()
     {
         return Inertia::render('TodoList/Index', [
-            'todos' =>  Todo::all(),
+            'todos' =>  Todo::whereNull('description')->get(),
+            'richTodos' =>  Todo::whereNotNull('description')->get(),
             'current_time' => Inertia::optional(callback: fn () => Carbon::now()->toIso8601String())
         ]);
     }
@@ -34,7 +35,18 @@ class TodoController extends Controller
             'description' => 'nullable|string',
         ]);
 
-        Todo::create($validated);
+
+        if (!$request->has('description')) {
+            Todo::create($validated);
+        }else{
+            Todo::create([
+                'title'=> $validated['title'],
+                'description'=> $validated['description'],
+                'time' => Carbon::now()->format('H:i:s'),
+                'date'=> Carbon::now()->format('Y-m-d'),
+            ]);
+        }
+
 
         return redirect()->route('todos.index');
         // return Inertia::render('TodoList/Index', [
@@ -69,10 +81,10 @@ class TodoController extends Controller
     {
         $todo->delete();
 
-        //return redirect()->route('todos.index');
+        return redirect()->route('todos.index');
         //Opción 2:
-        return Inertia::render('TodoList/Index', [
-            'todos' => Todo::all(),
-        ]);
+        // return Inertia::render('TodoList/Index', [
+        //     'todos' => Todo::all(),
+        // ]);
     }
 }
