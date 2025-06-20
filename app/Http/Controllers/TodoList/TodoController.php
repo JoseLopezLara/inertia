@@ -36,10 +36,10 @@ class TodoController extends Controller
 
         Todo::create($validated);
 
-        //return redirect()->route('todos.index');
-        return Inertia::render('TodoList/Index', [
-            'todos' => Todo::all(),
-        ]);
+        return redirect()->route('todos.index');
+        // return Inertia::render('TodoList/Index', [
+        //     'todos' => Todo::all(),
+        // ]);
     }
 
     /**
@@ -54,12 +54,12 @@ class TodoController extends Controller
         $todo->update($request->only('completed'));
 
         //Opción 1:
-        //return redirect()->route('todos.index');
+        return redirect()->route('todos.index');
 
         //Opción 2:
-        return Inertia::render('TodoList/Index', [
-            'todos' => Todo::all(),
-        ]);
+        // return Inertia::render('TodoList/Index', [
+        //     'todos' => Todo::all(),
+        // ]);
     }
 
     /**
