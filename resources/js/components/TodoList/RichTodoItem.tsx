@@ -4,10 +4,12 @@ import { type Todo } from '@/types/TodoList';
 import { router } from '@inertiajs/react';
 import { Badge } from "@/components/ui/badge"
 import {formatTimeToHhMm} from "@/utils/formaTimeToHhMm"
-import { DeleteTodoDialog } from './DeleteTodoDialog';
+import { DeleteTodoDialog } from '@/components/TodoList/DeleteTodoDialog';
+import { EditTodoDialog } from '@/components/TodoList/EditTodoDialog';
+
 
 interface RichTodoItemProps {
-    todo: Todo; 
+    todo: Todo;
 }
 
 // Componente que representa un ítem/tarea en la lista de tareas
@@ -34,6 +36,14 @@ export const RichTodoItem: React.FC<RichTodoItemProps> = ({ todo }) => {
         });
     };
 
+    // Confirma y ejecuta la edición de la tarea
+    const handleEditConfirm = () => {
+        router.delete(route('todos.destroy', todo.id), {
+            preserveScroll: true,
+            onSuccess: () => setIsDialogOpen(false), // Cierra el diálogo al borrar
+        });
+    };
+
     return (
         // Renderiza la tarea individual con checkbox y botón de borrar
         <li className="mb-2 flex items-center">
@@ -54,13 +64,23 @@ export const RichTodoItem: React.FC<RichTodoItemProps> = ({ todo }) => {
                         {todo.title}
                     </span>
 
-                    {/* Botón para abrir el diálogo de confirmación de borrado */}
-                    <DeleteTodoDialog
-                        open={isDialogOpen}
-                        onOpenChange={setIsDialogOpen}
-                        onConfirm={handleDeleteConfirm}
-                        todoTitle={todo.title}
-                    />
+                    {/* Componentes para abrir el diálogo de confirmación de borrado y edición */}
+                    <div className='flex justify-center items-center'>
+                        <DeleteTodoDialog
+                            open={isDialogOpen}
+                            onOpenChange={setIsDialogOpen}
+                            onConfirm={handleDeleteConfirm}
+                            todoTitle={todo.title}
+                        />
+
+                        <EditTodoDialog
+                            openEditDiaog={isDialogOpen}
+                            onOpenEditDiaogChange={setIsDialogOpen}
+                            onConfirm={handleEditConfirm}
+                            todoTitle={todo.title}
+                            todoDescription={todo.description!}
+                        />
+                    </div>
                 </div>
 
                 {/* Descripción de la tarea */}
