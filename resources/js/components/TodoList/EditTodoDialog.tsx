@@ -28,7 +28,9 @@ interface EditTodoDialogProps {
 export const EditTodoDialog: React.FC<EditTodoDialogProps> = ({
     openEditDiaog, onOpenEditDiaogChange, onConfirm, todoTitle, todoDescription, onTitleChange, onDescriptionChange}) => {
     return (
-        <Dialog>
+        <Dialog
+            open={openEditDiaog} onOpenChange={onOpenEditDiaogChange}
+        >
             <form className="flex">
                 <DialogTrigger asChild>
                     <button

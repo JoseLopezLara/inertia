@@ -16,6 +16,7 @@ interface RichTodoItemProps {
 export const RichTodoItem: React.FC<RichTodoItemProps> = ({ todo }) => {
     // Estado local para controlar si el diálogo de confirmación de borrado está abierto
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const displayTime = formatTimeToHhMm(todo.date + ' ' + todo.time);
     const [todoTitle, setTodoTitle] = useState(todo.title);
     const [todoDescription, setTodoDescription] = useState(todo.description);
@@ -51,7 +52,13 @@ export const RichTodoItem: React.FC<RichTodoItemProps> = ({ todo }) => {
                 title: todo.title,
                 description: todo.description,
             },
-            {preserveScroll: true}
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    console.log("Se edito");
+                    setIsEditDialogOpen(false);
+                }
+            }
         );
     };
 
@@ -85,8 +92,8 @@ export const RichTodoItem: React.FC<RichTodoItemProps> = ({ todo }) => {
                         />
 
                         <EditTodoDialog
-                            openEditDiaog={isDialogOpen}
-                            onOpenEditDiaogChange={setIsDialogOpen}
+                            openEditDiaog={isEditDialogOpen}
+                            onOpenEditDiaogChange={setIsEditDialogOpen}
                             onConfirm={handleEditConfirm}
                             todoTitle={todo.title}
                             todoDescription={todo.description!}
