@@ -7,6 +7,7 @@ use App\Models\Todo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use DB;
 
 /**
  * Controlador para gestionar la funcionalidad de la Lista de Tareas (TodoList).
@@ -59,19 +60,46 @@ class TodoController extends Controller
      */
     public function update(Request $request, Todo $todo)
     {
-        $request->validate([
-            'completed' => 'required|boolean',
+        logger("Update");
+
+        
+
+        logger($todo);
+        $validated = $request->validate([
+            'completed' => 'boolean|nullable',
+            'title' => 'nullable|string|max:50000',
+            'description' => 'nullable|string|max:50000',
         ]);
 
-        $todo->update($request->only('completed'));
+        try {
+            DB::beginTransaction();
 
-        //Opción 1:
-        return redirect()->route('todos.index');
+            // Si está presente el campo 'completed', actualiza solo ese campo.
+            if ($request->has('completed')) {
+                $todo->completed = $validated['completed'];
+            }
 
-        //Opción 2:
-        // return Inertia::render('TodoList/Index', [
-        //     'todos' => Todo::all(),
-        // ]);
+            // Si viene algún dato de 'title' o 'description', actualízalos.
+            if ($request->has('title') || $request->has('description')) {
+                // Solo sobreescribe si realmente vienen datos nuevos
+                if ($request->filled('title')) {
+                    $todo->title = $validated['title'];
+                }
+                if ($request->has('description')) { // Puede ser null, así que usar has
+                    $todo->description = $validated['description'];
+                }
+            }
+
+            $todo->save();
+
+            DB::commit();
+            logger("Update success");
+            return redirect()->route('todos.index');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            logger("Update failed: " . $e->getMessage());
+            return redirect()->route('todos.index');
+        }
     }
 
     /**

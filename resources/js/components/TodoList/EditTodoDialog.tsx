@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import {SquarePen} from "lucide-react";
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea";
 
 interface EditTodoDialogProps {
     openEditDiaog: boolean;
@@ -20,10 +21,12 @@ interface EditTodoDialogProps {
     onConfirm: () => void;
     todoTitle: string;
     todoDescription: string;
+    onTitleChange: (title: string) => void;
+    onDescriptionChange: (description: string) => void;
 }
 
 export const EditTodoDialog: React.FC<EditTodoDialogProps> = ({
-    openEditDiaog, onOpenEditDiaogChange, onConfirm, todoTitle, todoDescription}) => {
+    openEditDiaog, onOpenEditDiaogChange, onConfirm, todoTitle, todoDescription, onTitleChange, onDescriptionChange}) => {
     return (
         <Dialog>
             <form className="flex">
@@ -37,32 +40,37 @@ export const EditTodoDialog: React.FC<EditTodoDialogProps> = ({
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Edit profile</DialogTitle>
-                    <DialogDescription>
+                    <DialogTitle>Edit Task</DialogTitle>
+                    {/* <DialogDescription>
                     Make changes to your profile here. Click save when you&apos;re
                     done.
-                    </DialogDescription>
+                    </DialogDescription> */}
                 </DialogHeader>
                 <div className="grid gap-4">
                     <div className="grid gap-3">
-                    <Label htmlFor="name-1">Name</Label>
-                    <Input id="name-1" name="name" defaultValue="Pedro Duarte" />
+                    <Label htmlFor="name-1">Title</Label>
+                    <Input 
+                        id="title" name="name" defaultValue={todoTitle}
+                        onChange={(e) => onTitleChange(e.target.value)}
+                        />
                     </div>
                     <div className="grid gap-3">
-                    <Label htmlFor="username-1">Username</Label>
-                    <Input id="username-1" name="username" defaultValue="@peduarte" />
+                    <Label htmlFor="username-1">Description</Label>
+                    <Textarea 
+                        id="description" name="username" defaultValue={todoDescription} 
+                        onChange={(e) => onDescriptionChange(e.target.value)}
+                    />
                     </div>
                 </div>
                 <DialogFooter>
                     <DialogClose asChild>
                     <Button variant="outline">Cancel</Button>
                     </DialogClose>
-                    <Button type="submit">Save changes</Button>
+                    <Button type="submit" onClick={onConfirm}>Save changes</Button>
                 </DialogFooter>
                 </DialogContent>
             </form>
         </Dialog>
-
     );
 };
 

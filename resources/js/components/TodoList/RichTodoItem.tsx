@@ -17,6 +17,8 @@ export const RichTodoItem: React.FC<RichTodoItemProps> = ({ todo }) => {
     // Estado local para controlar si el diálogo de confirmación de borrado está abierto
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const displayTime = formatTimeToHhMm(todo.date + ' ' + todo.time);
+    const [todoTitle, setTodoTitle] = useState(todo.title);
+    const [todoDescription, setTodoDescription] = useState(todo.description);
 
     // Cambia el estado de completado de la tarea (checkbox)
     // Hace una petición PATCH al backend usando Inertia.js
@@ -30,7 +32,7 @@ export const RichTodoItem: React.FC<RichTodoItemProps> = ({ todo }) => {
 
     // Confirma y ejecuta el borrado de la tarea
     const handleDeleteConfirm = () => {
-        router.delete(route('todos.destroy', todo.id), {
+        router.delete(route('todos.update', todo.id), {
             preserveScroll: true,
             onSuccess: () => setIsDialogOpen(false), // Cierra el diálogo al borrar
         });
@@ -38,10 +40,19 @@ export const RichTodoItem: React.FC<RichTodoItemProps> = ({ todo }) => {
 
     // Confirma y ejecuta la edición de la tarea
     const handleEditConfirm = () => {
-        router.delete(route('todos.destroy', todo.id), {
-            preserveScroll: true,
-            onSuccess: () => setIsDialogOpen(false), // Cierra el diálogo al borrar
-        });
+        console.log("Editando tarea: " + todo.title + " " + todo.description);
+        
+        todo.title = todoTitle;
+        todo.description = todoDescription;
+
+        router.patch(
+            route('todos.update', todo.id),
+            {
+                title: todo.title,
+                description: todo.description,
+            },
+            {preserveScroll: true}
+        );
     };
 
     return (
@@ -79,6 +90,8 @@ export const RichTodoItem: React.FC<RichTodoItemProps> = ({ todo }) => {
                             onConfirm={handleEditConfirm}
                             todoTitle={todo.title}
                             todoDescription={todo.description!}
+                            onTitleChange={setTodoTitle}
+                            onDescriptionChange={setTodoDescription}
                         />
                     </div>
                 </div>
