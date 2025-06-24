@@ -18,8 +18,6 @@ export const RichTodoItem: React.FC<RichTodoItemProps> = ({ todo }) => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const displayTime = formatTimeToHhMm(todo.date + ' ' + todo.time);
-    const [todoTitle, setTodoTitle] = useState(todo.title);
-    const [todoDescription, setTodoDescription] = useState(todo.description);
 
     // Cambia el estado de completado de la tarea (checkbox)
     // Hace una petición PATCH al backend usando Inertia.js
@@ -40,17 +38,14 @@ export const RichTodoItem: React.FC<RichTodoItemProps> = ({ todo }) => {
     };
 
     // Confirma y ejecuta la edición de la tarea
-    const handleEditConfirm = () => {
-        console.log("Editando tarea: " + todo.title + " " + todo.description);
-        
-        todo.title = todoTitle;
-        todo.description = todoDescription;
+    const handleEditConfirm = (title:string, description:string) => {
+        console.log("Editando tarea: " + title + " " + description);
 
         router.patch(
             route('todos.update', todo.id),
             {
-                title: todo.title,
-                description: todo.description,
+                title: title,
+                description: description,
             },
             {
                 preserveScroll: true,
@@ -97,8 +92,6 @@ export const RichTodoItem: React.FC<RichTodoItemProps> = ({ todo }) => {
                             onConfirm={handleEditConfirm}
                             todoTitle={todo.title}
                             todoDescription={todo.description!}
-                            onTitleChange={setTodoTitle}
-                            onDescriptionChange={setTodoDescription}
                         />
                     </div>
                 </div>
